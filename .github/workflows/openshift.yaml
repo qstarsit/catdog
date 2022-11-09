@@ -23,3 +23,31 @@ jobs:
       with:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/catdog
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: OpenShift Tools Installer
+      uses: redhat-actions/openshift-tools-installer@v1
+      with:
+        oc: "4"
+
+    - name: Login to OpenShift
+      uses: redhat-actions/oc-login@v1.1
+      with:
+        openshift_server_url: https://api.meetup.azurecloudqstars.nl:6443
+        openshift_token: ${{ secrets.OC_TOKEN }}
+        namespace: catdog
+        insecure_skip_tls_verify: true
+        
+    - name: oc-new-app
+      uses: redhat-actions/oc-new-app@v1.2
+      with:
+        app_name: catdog-api
+        image: ${{ secrets.DOCKERHUB_USERNAME }}/catdog
+        port: 8000
+        registry_hostname: docker.io
+        registry_username: ${{ secrets.DOCKERHUB_USERNAME}}
+        registry_password: ${{ secrets.DOCKERHUB_TOKEN}}
