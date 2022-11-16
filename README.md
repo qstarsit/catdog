@@ -13,6 +13,7 @@ https://www.meetup.com/nl-NL/Qstars-IT-Opensource-Redhat-Meetups
   - DOCKERHUB_TOKEN
   - DOCKERHUB_USERNAME
   - OC_TOKEN
+  - OC_SERVER
 - Een goede bak koffie/thee
 
 ## Code
